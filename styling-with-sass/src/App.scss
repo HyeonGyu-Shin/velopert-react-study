@@ -1,0 +1,13 @@
+$black: #000;
+
+.App {
+    border: 1px solid $black;
+    margin: 0 auto;
+    margin-top: 4rem;
+    padding: 1rem;
+    width: 512px;
+
+    .buttons:not(:first-child) {
+        margin-top: 1rem;
+    }
+}
