@@ -1,17 +1,13 @@
-import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 
 const countActiveUsers = (users) => {
     console.log(`활성 사용자 수를 세는 중...`);
-    return users.filter(user => user.active).length;
-}
+    return users.filter((user) => user.active).length;
+};
 
 const UsersContainer = () => {
-
-    useEffect(() => {
-        console.log(`userscontainer 생성!`);
-    })
     const [inputs, setInputs] = useState({
         username: '',
         email: '',
@@ -40,13 +36,16 @@ const UsersContainer = () => {
 
     const { username, email } = inputs;
 
-    const onChange = useCallback((e) => {
-        const { name, value } = e.target;
-        setInputs({
-            ...inputs,
-            [name]: value,
-        });
-    }, [inputs]);
+    const onChange = useCallback(
+        (e) => {
+            const { name, value } = e.target;
+            setInputs({
+                ...inputs,
+                [name]: value,
+            });
+        },
+        [inputs]
+    );
 
     const nextId = useRef(4);
 
@@ -54,26 +53,26 @@ const UsersContainer = () => {
         const user = {
             id: nextId.current,
             username,
-            email
+            email,
         };
-        setUsers(users => users.concat(user));
+        setUsers((users) => users.concat(user));
 
         setInputs({
             username: '',
-            email: ''
+            email: '',
         });
         nextId.current += 1;
     }, [username, email]);
 
-    const onRemove = useCallback(id => {
+    const onRemove = useCallback((id) => {
         // user.id 가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
         // = user.id 가 id 인 것을 제거함
-        setUsers(users => users.filter(user => user.id !== id));
+        setUsers((users) => users.filter((user) => user.id !== id));
     }, []);
 
-    const onToggle = useCallback(id => {
-        setUsers(users =>
-            users.map(user =>
+    const onToggle = useCallback((id) => {
+        setUsers((users) =>
+            users.map((user) =>
                 user.id === id ? { ...user, active: !user.active } : user
             )
         );

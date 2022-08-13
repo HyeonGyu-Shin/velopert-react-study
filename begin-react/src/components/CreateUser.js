@@ -1,10 +1,6 @@
 import React from 'react';
 
 const CreateUser = ({ username, email, onChange, onCreate }) => {
-    React.useEffect(() => {
-        console.log(`CreateUser 컴포넌트 생성!`)
-    })
-
     return (
         <div>
             <input

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import UsersContainer from './components/UsersContainer';
+import React from 'react';
+import Counter from './components/Counter';
 
 const App = () => {
     return (
         <div>
-            <UsersContainer />
+            <Counter></Counter>
         </div>
     );
 };
