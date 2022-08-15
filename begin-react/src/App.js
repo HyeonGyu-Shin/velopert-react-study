@@ -1,10 +1,10 @@
 import React from 'react';
-import Counter from './components/Counter';
+import UsersContainer from './components/UsersContainer';
 
 const App = () => {
     return (
         <div>
-            <Counter></Counter>
+            <UsersContainer></UsersContainer>
         </div>
     );
 };

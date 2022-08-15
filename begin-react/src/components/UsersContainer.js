@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
+import useInputs from '../hooks/useInputs';
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 
@@ -8,7 +9,7 @@ const countActiveUsers = (users) => {
 };
 
 const UsersContainer = () => {
-    const [inputs, setInputs] = useState({
+    const [{ username, email }, onChange, reset] = useInputs({
         username: '',
         email: '',
     });
@@ -34,19 +35,6 @@ const UsersContainer = () => {
         },
     ]);
 
-    const { username, email } = inputs;
-
-    const onChange = useCallback(
-        (e) => {
-            const { name, value } = e.target;
-            setInputs({
-                ...inputs,
-                [name]: value,
-            });
-        },
-        [inputs]
-    );
-
     const nextId = useRef(4);
 
     const onCreate = useCallback(() => {
@@ -55,14 +43,12 @@ const UsersContainer = () => {
             username,
             email,
         };
+
         setUsers((users) => users.concat(user));
 
-        setInputs({
-            username: '',
-            email: '',
-        });
+        reset();
         nextId.current += 1;
-    }, [username, email]);
+    }, [username, email, reset]);
 
     const onRemove = useCallback((id) => {
         // user.id 가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
@@ -85,6 +71,7 @@ const UsersContainer = () => {
             <CreateUser
                 username={username}
                 email={email}
+                ß
                 onChange={onChange}
                 onCreate={onCreate}
             />
