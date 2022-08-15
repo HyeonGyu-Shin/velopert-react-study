@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
-import useInputs from '../hooks/useInputs';
+import useReducerInputs from '../hooks/useReducerInputs';
+
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 
@@ -9,10 +10,14 @@ const countActiveUsers = (users) => {
 };
 
 const UsersContainer = () => {
-    const [{ username, email }, onChange, reset] = useInputs({
-        username: '',
-        email: '',
+    const [state, onChange, reset] = useReducerInputs({
+        inputs: {
+            username: '',
+            email: '',
+        },
     });
+
+    const { username, email } = state.inputs;
 
     const [users, setUsers] = useState([
         {
@@ -47,6 +52,7 @@ const UsersContainer = () => {
         setUsers((users) => users.concat(user));
 
         reset();
+
         nextId.current += 1;
     }, [username, email, reset]);
 
