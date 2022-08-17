@@ -1,25 +1,11 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react';
+import React, { useRef, useMemo, useCallback, useReducer } from 'react';
 import useReducerInputs from '../hooks/useReducerInputs';
 
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 
-const countActiveUsers = (users) => {
-    console.log(`활성 사용자 수를 세는 중...`);
-    return users.filter((user) => user.active).length;
-};
-
-const UsersContainer = () => {
-    const [state, onChange, reset] = useReducerInputs({
-        inputs: {
-            username: '',
-            email: '',
-        },
-    });
-
-    const { username, email } = state.inputs;
-
-    const [users, setUsers] = useState([
+const initialState = {
+    users: [
         {
             id: 1,
             username: 'velopert',
@@ -38,7 +24,47 @@ const UsersContainer = () => {
             email: 'liz@example.com',
             active: false,
         },
-    ]);
+    ],
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'ONCREATE':
+            return {
+                users: [...state.users, action.user],
+            };
+        case 'ONREMOVE':
+            return {
+                users: state.users.filter((user) => user.id !== action.id),
+            };
+        case 'ONTOGGLE':
+            return {
+                users: state.users.map((user) =>
+                    user.id === action.id
+                        ? { ...user, active: !user.active }
+                        : { ...user }
+                ),
+            };
+        default:
+            return state;
+    }
+};
+
+const countActiveUsers = (users) => {
+    console.log(`활성 사용자 수를 세는 중...`);
+    return users.filter((user) => user.active).length;
+};
+
+const UsersContainer = () => {
+    const [state, onChange, reset] = useReducerInputs({
+        inputs: {
+            username: '',
+            email: '',
+        },
+    });
+    const { username, email } = state.inputs;
+
+    const [{ users }, dispatch] = useReducer(reducer, initialState);
 
     const nextId = useRef(4);
 
@@ -47,9 +73,10 @@ const UsersContainer = () => {
             id: nextId.current,
             username,
             email,
+            active: false,
         };
 
-        setUsers((users) => users.concat(user));
+        dispatch({ type: 'ONCREATE', user });
 
         reset();
 
@@ -57,17 +84,11 @@ const UsersContainer = () => {
     }, [username, email, reset]);
 
     const onRemove = useCallback((id) => {
-        // user.id 가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듬
-        // = user.id 가 id 인 것을 제거함
-        setUsers((users) => users.filter((user) => user.id !== id));
+        dispatch({ type: 'ONREMOVE', id });
     }, []);
 
     const onToggle = useCallback((id) => {
-        setUsers((users) =>
-            users.map((user) =>
-                user.id === id ? { ...user, active: !user.active } : user
-            )
-        );
+        dispatch({ type: 'ONTOGGLE', id });
     }, []);
 
     const count = useMemo(() => countActiveUsers(users), [users]);
