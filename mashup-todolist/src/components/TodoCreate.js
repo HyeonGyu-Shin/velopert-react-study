@@ -6,6 +6,7 @@ const TodoCreate = () => {
     useEffect(() => {
         console.log('TodoCreate 리렌더링 되었다!');
     });
+
     const value = useContext(TodoValueContext);
     const actions = useContext(TodoActionContext);
 
