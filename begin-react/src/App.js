@@ -1,10 +1,12 @@
 import React from 'react';
-import UsersContainer from './components/UsersContainer';
+import ItemContextExample from './components/ItemContextExample';
+// import UsersContainer from './components/UsersContainer';
 
 const App = () => {
     return (
         <div>
-            <UsersContainer></UsersContainer>
+            {/* <UsersContainer></UsersContainer> */}
+            <ItemContextExample />
         </div>
     );
 };
