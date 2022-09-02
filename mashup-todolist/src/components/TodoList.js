@@ -7,7 +7,7 @@ const TodoList = () => {
     return (
         <>
             {todos.map((v, i) => (
-                <TodoItem key={v.id} text={v.text} />
+                <TodoItem key={v.id} text={v.text} id={v.id} />
             ))}
         </>
     );
